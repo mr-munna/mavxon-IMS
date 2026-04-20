@@ -4582,12 +4582,12 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Code</TableHeader>
                       <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Description</TableHeader>
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Total (PCS)</TableHeader>
+                      <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Dokhinkhan</TableHeader>
+                      <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark</TableHeader>
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Bonorupa</TableHeader>
                       <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark_1</TableHeader>
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Banani</TableHeader>
                       <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark_2</TableHeader>
-                      <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Dokhinkhan</TableHeader>
-                      <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark</TableHeader>
 
                       {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
                     </tr>
