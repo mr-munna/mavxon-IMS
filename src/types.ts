@@ -94,6 +94,7 @@ export interface Sale {
   items: SaleItem[];
   subTotal: number;
   discount: number;
+  discountPercent?: number;
   totalAmount: number;
   paidAmount: number;
   dueAmount: number;

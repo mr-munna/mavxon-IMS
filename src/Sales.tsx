@@ -81,6 +81,7 @@ export function SalesManager({
   const [clientAddress, setClientAddress] = useState('');
   const [saleItems, setSaleItems] = useState<SaleItem[]>([]);
   const [discount, setDiscount] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
   const [paidAmount, setPaidAmount] = useState(0);
 
   const [itemSearchQuery, setItemSearchQuery] = useState('');
@@ -141,7 +142,9 @@ export function SalesManager({
   };
 
   const calculateTotal = () => {
-    return calculateSubtotal() - discount;
+    const subtotal = calculateSubtotal();
+    const percentDiscount = (subtotal * (discountPercent || 0)) / 100;
+    return subtotal - percentDiscount - (discount || 0);
   };
 
   const handleSaveSale = async () => {
@@ -159,6 +162,7 @@ export function SalesManager({
         items: saleItems,
         subTotal: calculateSubtotal(),
         discount,
+        discountPercent,
         totalAmount,
         paidAmount,
         dueAmount: totalAmount - paidAmount,
@@ -669,25 +673,75 @@ export function SalesManager({
 
                         <div className="space-y-4">
                              <h4 className="font-bold text-sm text-gray-500 uppercase tracking-wider">Payment Details</h4>
-                             <div className="bg-gray-50 p-6 rounded-2xl max-w-sm space-y-4 border border-gray-100">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase">Discount (৳)</label>
-                                    <input
-                                        type="number"
-                                        value={discount}
-                                        onChange={(e) => setDiscount(Number(e.target.value))}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl text-right font-mono focus:ring-2 focus:ring-blue-500 outline-none"
-                                    />
+                             <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4">
+                                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (%)</label>
+                                        <div className="relative">
+                                            <input
+                                                type="number"
+                                                value={discountPercent || ''}
+                                                onChange={(e) => setDiscountPercent(Number(e.target.value))}
+                                                className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+                                                placeholder="0"
+                                            />
+                                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">%</span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (৳)</label>
+                                        <div className="relative">
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">৳</span>
+                                            <input
+                                                type="number"
+                                                value={discount || ''}
+                                                onChange={(e) => setDiscount(Number(e.target.value))}
+                                                className="w-full pl-8 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+                                                placeholder="0"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <label className="text-xs font-bold text-gray-500 uppercase">Paid Amount (৳)</label>
+                                            <div className="flex gap-1">
+                                                <button 
+                                                    onClick={() => setPaidAmount(calculateTotal())}
+                                                    className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold hover:bg-green-200 transition-colors shadow-sm"
+                                                >
+                                                    PAID
+                                                </button>
+                                                <button 
+                                                    onClick={() => setPaidAmount(0)}
+                                                    className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold hover:bg-red-200 transition-colors shadow-sm"
+                                                >
+                                                    DUE
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="relative">
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">৳</span>
+                                            <input
+                                                type="number"
+                                                value={paidAmount || ''}
+                                                onChange={(e) => setPaidAmount(Number(e.target.value))}
+                                                className="w-full pl-8 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg text-green-700 focus:ring-2 focus:ring-green-500 outline-none shadow-sm"
+                                                placeholder="0"
+                                            />
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase">Paid Amount (৳)</label>
-                                    <input
-                                        type="number"
-                                        value={paidAmount}
-                                        onChange={(e) => setPaidAmount(Number(e.target.value))}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl text-right font-mono focus:ring-2 focus:ring-green-500 outline-none"
-                                    />
-                                </div>
+                                
+                                {saleItems.length > 0 && (
+                                    <div className="pt-2 border-t border-gray-200 flex justify-between items-center text-xs font-bold text-gray-400">
+                                        <span className="uppercase">Net Payable Amount:</span>
+                                        <span className="text-sm font-black text-blue-600 font-mono">
+                                            ৳{calculateTotal().toLocaleString()}
+                                        </span>
+                                    </div>
+                                )}
                              </div>
                         </div>
                     </div>
@@ -805,7 +859,7 @@ export function SalesManager({
                                     </div>
                                     <div className="flex justify-between items-center text-sm">
                                         <span className="text-red-500 font-medium tracking-wide">Discount</span>
-                                        <span className="font-mono text-red-600 font-medium">- ৳{discount.toLocaleString()}</span>
+                                        <span className="font-mono text-red-600 font-medium">- ৳{(calculateSubtotal() - calculateTotal()).toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-lg font-black border-t-2 border-gray-900 pt-3 mt-3">
                                         <span className="text-gray-900 tracking-wide">Total</span>
