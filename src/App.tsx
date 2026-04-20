@@ -3166,7 +3166,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
         )}
       </AnimatePresence>
 
-      <div className={cn("flex", !user && isAuthReady ? "h-screen overflow-hidden bg-cover bg-center bg-no-repeat" : "min-h-screen bg-slate-50")} style={!user && isAuthReady ? { backgroundImage: 'url("/user_photo.jpg")' } : {}}>
+      <div className={cn("flex", !user && isAuthReady ? "h-screen overflow-hidden bg-cover bg-center bg-no-repeat" : "min-h-screen bg-slate-50")} style={!user && isAuthReady ? { backgroundImage: 'url("https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2000")' } : {}}>
         {!user && isAuthReady && (
           <div className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-0" />
         )}
@@ -3578,9 +3578,10 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
         {user && isApproved && activeTab === 'search' && (
           <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
-               src="/global_bg.jpg" 
+               src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000" 
                alt="" 
                className="w-full h-full object-cover opacity-90"
+               referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
           </div>
@@ -5637,7 +5638,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                {/* Background Image with Overlay */}
                <div className="absolute inset-0 z-0">
                  <img 
-                    src="/home_bg.jpg" 
+                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2000" 
                     alt="Background" 
                     className="w-full h-full object-cover opacity-90"
                     referrerPolicy="no-referrer"
