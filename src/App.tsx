@@ -3300,7 +3300,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                 <h2 className="text-sm font-bold text-white tracking-tight truncate max-w-[100px] sm:max-w-[150px]">
                   {activeTab === 'landing' && 'Home'}
                   {activeTab === 'search' && 'Search'}
-                  {activeTab === 'master' && 'Product Inventory'}
+                  {activeTab === 'master' && 'ADD PRODUCT'}
                   {activeTab === 'booked' && 'Booked Item'}
                   {activeTab === 'stock' && 'Stock Item'}
                   {activeTab === 'quote' && 'Make Quote'}
@@ -3316,7 +3316,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                 <h2 className="text-xl font-bold text-white tracking-tight">
                   {activeTab === 'landing' && 'Home'}
                   {activeTab === 'search' && 'Search'}
-                  {activeTab === 'master' && 'Product Inventory'}
+                  {activeTab === 'master' && 'ADD PRODUCT'}
                   {activeTab === 'booked' && 'Booked Item'}
                   {activeTab === 'stock' && 'Stock Item'}
                   {activeTab === 'quote' && 'Make Quote'}
@@ -4589,7 +4589,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Dokhinkhan</TableHeader>
                       <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark</TableHeader>
 
-                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
+                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (!!highlightedRow || editingId !== null) && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
                     </tr>
                   </thead>
                   <tbody>
@@ -5305,7 +5305,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                                     const w = parseFloat(parts[0]);
                                     const h = parseFloat(parts[1]);
                                     if (!isNaN(w) && !isNaN(h)) {
-                                      const unitSft = (w / 30.48) * (h / 30.48);
+                                      const unitSft = (w / 30) * (h / 30);
                                       newData.qtyPcs = Math.round(sft / unitSft);
                                     }
                                   }
@@ -5330,7 +5330,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                                     const w = parseFloat(parts[0]);
                                     const h = parseFloat(parts[1]);
                                     if (!isNaN(w) && !isNaN(h)) {
-                                      const unitSft = (w / 30.48) * (h / 30.48);
+                                      const unitSft = (w / 30) * (h / 30);
                                       newData.qtySft = Number((pcs * unitSft).toFixed(2));
                                     }
                                   }
