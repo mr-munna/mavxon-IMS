@@ -45,12 +45,11 @@ textarea.editing-input-active {
   resize: none;
 }
 
-/* Specific mobile scroll lock to prevent page bounce/scroll */
+/* Specific mobile layout tweaks */
 @media (max-width: 767px) {
   html, body {
-    overflow: hidden;
     height: 100%;
-    position: fixed;
-    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 }

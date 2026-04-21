@@ -585,7 +585,7 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead className="sticky top-0 z-20 bg-gray-50 shadow-sm">
               <tr>
@@ -764,7 +764,7 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
                   </div>
 
                   {/* Table */}
-                  <div className="flex-1 overflow-auto max-h-[50vh] overscroll-contain border rounded-lg">
+                  <div className="flex-1 overflow-auto max-h-[50vh] overscroll-auto border rounded-lg">
                     <table className="w-full border-collapse min-w-[600px]">
                       <thead className="sticky top-0 z-10">
                         <tr className="bg-gray-900 text-white text-xs uppercase tracking-wider">
@@ -898,7 +898,7 @@ const UserRoleTable = ({
         {users.length}
       </span>
     </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto">
       <table className="w-full border-separate border-spacing-0 min-w-[1000px]">
         <thead>
           <tr>
@@ -1093,10 +1093,18 @@ export default function App() {
       const footer = quoteRef.current.querySelector('#quotation-footer') as HTMLElement;
 
       if (!header || !body || !lastPage || !footer) {
+        const missing = [];
+        if (!header) missing.push('Header');
+        if (!body) missing.push('Body');
+        if (!lastPage) missing.push('Terms/Signature');
+        if (!footer) missing.push('Footer');
+        
         toast.dismiss(loadingToast);
-        toast.error('Missing quotation elements for PDF generation.');
-        quoteRef.current.style.overflow = originalOverflow;
-        quoteRef.current.style.height = originalHeight;
+        toast.error(`Missing quotation elements: ${missing.join(', ')}`);
+        if (quoteRef.current) {
+          quoteRef.current.style.overflow = originalOverflow;
+          quoteRef.current.style.height = originalHeight;
+        }
         window.scrollTo(scrollX, scrollY);
         return;
       }
@@ -3312,7 +3320,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
 
         {/* Main Content Wrapper */}
         <div className={cn(
-          "flex-1 flex flex-col min-h-screen transition-all overscroll-none overflow-hidden", 
+          "flex-1 flex flex-col min-h-screen transition-all", 
           user && isApproved ? "md:ml-56" : "",
           user && isApproved ? "pt-16 pb-16 md:pt-0 md:pb-0 h-[100dvh] md:h-auto md:overflow-visible" : ""
         )}>
@@ -3571,23 +3579,23 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
     )}
 
         {/* Global Backgrounds */}
-        {user && isApproved && (activeTab === 'search' || activeTab === 'landing') && (
+        {(activeTab === 'landing' || activeTab === 'search' || !user) && (
           <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
             <img 
-               src={activeTab === 'landing' 
-                 ? "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2000"
-                 : "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000"
+               src={activeTab === 'landing' || !user
+                 ? "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2600"
+                 : "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2600"
                }
                alt="" 
-               className="w-full h-full object-cover opacity-90 transition-all duration-1000"
+               className="w-full h-full object-cover opacity-90 transition-all duration-700"
                referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
           </div>
         )}
 
       <main className={cn(
-        "flex-1 w-full mx-auto pb-24 space-y-6 relative overflow-y-auto overscroll-contain", 
+        "flex-1 w-full mx-auto pb-24 space-y-6 relative overflow-y-auto overscroll-auto", 
         user && isApproved ? "max-w-[1600px] p-4 sm:p-6" : ""
       )}>
         {/* Login Required Message */}
@@ -4276,6 +4284,53 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                       )}
                       {activeTab === 'master' && (
                         <div className="flex items-center gap-2">
+                          {highlightedRow && masterSubTab === 'tiles' && (
+                            <div className="flex items-center gap-2 mr-2 pr-2 border-r border-gray-200 animate-in fade-in slide-in-from-left-2">
+                              {editingId === highlightedRow ? (
+                                <>
+                                  <Button 
+                                    variant="primary" 
+                                    size="sm" 
+                                    onClick={() => handleInlineEditSave('tiles', highlightedRow)}
+                                  >
+                                    <Save className="w-4 h-4" /> Save
+                                  </Button>
+                                  <Button 
+                                    variant="secondary" 
+                                    size="sm" 
+                                    onClick={() => { setEditingId(null); setEditData(null); setHighlightedRow(null); }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => {
+                                      const tile = tiles.find(t => t.id === highlightedRow);
+                                      if (tile) {
+                                        setEditingId(tile.id);
+                                        setEditData({ ...tile });
+                                      }
+                                    }}
+                                    className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                  >
+                                    <Edit className="w-3.5 h-3.5" /> Edit
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => handleDeleteItem('tiles', highlightedRow)}
+                                    className="text-red-600 border-red-200 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" /> Delete
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          )}
                           <div className="relative">
                         <input
                           type="file"
@@ -4299,7 +4354,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
             </div>
           </div>
               <div className={cn(
-                "rounded-2xl shadow-xl border overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain",
+                "rounded-2xl shadow-xl border overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto",
                 activeTab === 'search' ? "bg-white/80 backdrop-blur-xl border-white/60 shadow-2xl" : "bg-white border-gray-200"
               )}>
                 <table className="w-full border-separate border-spacing-0 min-w-[1200px]">
@@ -4329,7 +4384,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Banani (SFT)</TableHeader>
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>PCS_2</TableHeader>
                       <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark_2</TableHeader>
-                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && !!highlightedRow && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
+                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && highlightedRow && activeTab !== 'master' && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
                     </tr>
                   </thead>
                   <tbody>
@@ -4521,7 +4576,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                               />
                             ) : tile.bananiRemark}
                           </TableCell>
-                           {(((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow === tile.id || isEditing)) && (
+                           {(((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow === tile.id || isEditing)) && activeTab !== 'master' && (
                              <TableCell>
                                <div className="flex gap-2">
                                  {isEditing ? (
@@ -4566,7 +4621,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                                </div>
                              </TableCell>
                            )}
-                           {(((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow !== tile.id && !isEditing)) && (
+                           {(((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow !== tile.id && !isEditing)) && activeTab !== 'master' && (
                              <TableCell>&nbsp;</TableCell>
                            )}
                         </tr>
@@ -4619,16 +4674,65 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                         </Button>
                       )}
                       {activeTab === 'master' && (
-                        <Button onClick={() => setShowAddModal('goods')} variant="ghost" className="text-blue-600">
-                          <Plus className="w-4 h-4" /> Add New Item
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          {highlightedRow && masterSubTab === 'goods' && (
+                            <div className="flex items-center gap-2 mr-2 pr-2 border-r border-gray-200 animate-in fade-in slide-in-from-left-2">
+                              {editingId === highlightedRow ? (
+                                <>
+                                  <Button 
+                                    variant="primary" 
+                                    size="sm" 
+                                    onClick={() => handleInlineEditSave('goods', highlightedRow)}
+                                  >
+                                    <Save className="w-4 h-4" /> Save
+                                  </Button>
+                                  <Button 
+                                    variant="secondary" 
+                                    size="sm" 
+                                    onClick={() => { setEditingId(null); setEditData(null); setHighlightedRow(null); }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => {
+                                      const good = goods.find(g => g.id === highlightedRow);
+                                      if (good) {
+                                        setEditingId(good.id);
+                                        setEditData({ ...good });
+                                      }
+                                    }}
+                                    className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                  >
+                                    <Edit className="w-3.5 h-3.5" /> Edit
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => handleDeleteItem('goods', highlightedRow)}
+                                    className="text-red-600 border-red-200 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" /> Delete
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          )}
+                          <Button onClick={() => setShowAddModal('goods')} variant="ghost" className="text-blue-600">
+                            <Plus className="w-4 h-4" /> Add New Item
+                          </Button>
+                        </div>
                       )}
                     </div>
                   )}
                 </div>
               </div>
               <div className={cn(
-                "rounded-2xl shadow-xl border overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain",
+                "rounded-2xl shadow-xl border overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto",
                 activeTab === 'search' ? "bg-white/80 backdrop-blur-xl border-white/60 shadow-2xl" : "bg-white border-gray-200"
               )}>
                 <table className="w-full border-separate border-spacing-0 min-w-[1000px]">
@@ -4655,7 +4759,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                       <TableHeader align="center" className={cn(activeTab === 'search' && "bg-slate-200/50")}>Dokhinkhan</TableHeader>
                       <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Remark</TableHeader>
 
-                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (!!highlightedRow || editingId !== null) && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
+                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow || editingId !== null) && activeTab !== 'master' && <TableHeader className={cn(activeTab === 'search' && "bg-slate-200/50")}>Action</TableHeader>}
                     </tr>
                   </thead>
                   <tbody>
@@ -4837,7 +4941,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                               />
                             ) : good.dokhinkhanRemark}
                           </TableCell>
-                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow === good.id || isEditing) && (
+                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow === good.id || isEditing) && activeTab !== 'master' && (
                             <TableCell>
                               <div className="flex gap-2">
                                 {isEditing ? (
@@ -4882,7 +4986,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                               </div>
                             </TableCell>
                           )}
-                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && highlightedRow !== good.id && !isEditing && (
+                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && highlightedRow !== good.id && !isEditing && activeTab !== 'master' && (
                             <TableCell>&nbsp;</TableCell>
                           )}
                         </tr>
@@ -4926,15 +5030,64 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                         </Button>
                       )}
                       {activeTab === 'master' && (
-                        <Button onClick={() => setShowAddModal('tools')} variant="ghost" className="text-blue-600">
-                          <Plus className="w-4 h-4" /> Add New Item
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          {highlightedRow && masterSubTab === 'tools' && (
+                            <div className="flex items-center gap-2 mr-2 pr-2 border-r border-gray-200 animate-in fade-in slide-in-from-left-2">
+                              {editingId === highlightedRow ? (
+                                <>
+                                  <Button 
+                                    variant="primary" 
+                                    size="sm" 
+                                    onClick={() => handleInlineEditSave('tools', highlightedRow)}
+                                  >
+                                    <Save className="w-4 h-4" /> Save
+                                  </Button>
+                                  <Button 
+                                    variant="secondary" 
+                                    size="sm" 
+                                    onClick={() => { setEditingId(null); setEditData(null); setHighlightedRow(null); }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => {
+                                      const tool = tools.find(t => t.id === highlightedRow);
+                                      if (tool) {
+                                        setEditingId(tool.id);
+                                        setEditData({ ...tool });
+                                      }
+                                    }}
+                                    className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                                  >
+                                    <Edit className="w-3.5 h-3.5" /> Edit
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => handleDeleteItem('tools', highlightedRow)}
+                                    className="text-red-600 border-red-200 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" /> Delete
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          )}
+                          <Button onClick={() => setShowAddModal('tools')} variant="ghost" className="text-blue-600">
+                            <Plus className="w-4 h-4" /> Add New Item
+                          </Button>
+                        </div>
                       )}
                     </div>
                   )}
                 </div>
               </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto">
                 <table className="w-full border-separate border-spacing-0 min-w-[1000px]">
                   <thead>
                     <tr>
@@ -4952,7 +5105,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                       <TableHeader align="center">Qty</TableHeader>
                        <TableHeader align="center">Issue To & Date</TableHeader>
                       <TableHeader align="center">Status</TableHeader>
-                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && <TableHeader>Action</TableHeader>}
+                      {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && activeTab !== 'master' && <TableHeader>Action</TableHeader>}
                     </tr>
                   </thead>
                   <tbody>
@@ -5083,7 +5236,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                               </span>
                             )}
                           </TableCell>
-                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow === tool.id || isEditing) && (
+                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && (highlightedRow === tool.id || isEditing) && activeTab !== 'master' && (
                             <TableCell>
                               <div className="flex gap-2">
                                 {isEditing ? (
@@ -5128,7 +5281,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                               </div>
                             </TableCell>
                           )}
-                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && highlightedRow !== tool.id && !isEditing && (
+                          {((isAdmin && activeTab === 'master') || (isSupremeAdmin && activeTab === 'master_sheet')) && highlightedRow !== tool.id && !isEditing && activeTab !== 'master' && (
                             <TableCell>&nbsp;</TableCell>
                           )}
                         </tr>
@@ -5203,7 +5356,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                   </div>
                 </div>
               </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto">
                 <table className="w-full border-separate border-spacing-0 min-w-[1200px]">
                   <thead>
                     <tr>
@@ -5539,7 +5692,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                 </h2>
               </div>
               <div className={cn(
-                "rounded-2xl shadow-2xl border-2 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-contain",
+                "rounded-2xl shadow-2xl border-2 overflow-auto max-h-[60vh] md:max-h-[70vh] overscroll-auto",
                 activeTab === 'search' ? "bg-white/50 backdrop-blur-3xl border-white/60" : "bg-white border-gray-200"
               )}>
                 <table className="w-full border-separate border-spacing-0 min-w-[1000px]">
@@ -5996,7 +6149,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
 
                   {/* Table */}
                   <div className="space-y-4">
-                    <div className="overflow-auto border border-gray-300 rounded-lg max-h-[400px] md:max-h-none overscroll-contain">
+                    <div className="overflow-auto border border-gray-300 rounded-lg max-h-[400px] md:max-h-none overscroll-auto">
                       <table className="w-full text-xs border-collapse min-w-[800px]">
                         <thead>
                           <tr className="bg-gray-100 border-b border-gray-300">

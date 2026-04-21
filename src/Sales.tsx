@@ -143,8 +143,25 @@ export function SalesManager({
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    const percentDiscount = (subtotal * (discountPercent || 0)) / 100;
-    return subtotal - percentDiscount - (discount || 0);
+    return subtotal - (discount || 0);
+  };
+
+  const handleDiscountPercentChange = (p: number) => {
+    const subtotal = calculateSubtotal();
+    setDiscountPercent(p);
+    const amount = (subtotal * p) / 100;
+    setDiscount(Number(amount.toFixed(2)));
+  };
+
+  const handleDiscountAmountChange = (a: number) => {
+    const subtotal = calculateSubtotal();
+    setDiscount(a);
+    if (subtotal > 0) {
+      const p = (a / subtotal) * 100;
+      setDiscountPercent(Number(p.toFixed(2)));
+    } else {
+      setDiscountPercent(0);
+    }
   };
 
   const handleSaveSale = async () => {
@@ -674,34 +691,7 @@ export function SalesManager({
                         <div className="space-y-4">
                              <h4 className="font-bold text-sm text-gray-500 uppercase tracking-wider">Payment Details</h4>
                              <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4">
-                                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (%)</label>
-                                        <div className="relative">
-                                            <input
-                                                type="number"
-                                                value={discountPercent || ''}
-                                                onChange={(e) => setDiscountPercent(Number(e.target.value))}
-                                                className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
-                                                placeholder="0"
-                                            />
-                                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">%</span>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (৳)</label>
-                                        <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">৳</span>
-                                            <input
-                                                type="number"
-                                                value={discount || ''}
-                                                onChange={(e) => setDiscount(Number(e.target.value))}
-                                                className="w-full pl-8 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
-                                                placeholder="0"
-                                            />
-                                        </div>
-                                    </div>
-
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <label className="text-xs font-bold text-gray-500 uppercase">Paid Amount (৳)</label>
@@ -732,6 +722,33 @@ export function SalesManager({
                                         </div>
                                     </div>
 
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (%)</label>
+                                        <div className="relative">
+                                            <input
+                                                type="number"
+                                                value={discountPercent || ''}
+                                                onChange={(e) => handleDiscountPercentChange(Number(e.target.value))}
+                                                className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+                                                placeholder="0"
+                                            />
+                                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">%</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (৳)</label>
+                                        <div className="relative">
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">৳</span>
+                                            <input
+                                                type="number"
+                                                value={discount || ''}
+                                                onChange={(e) => handleDiscountAmountChange(Number(e.target.value))}
+                                                className="w-full pl-8 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-right font-mono text-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+                                                placeholder="0"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 {saleItems.length > 0 && (
