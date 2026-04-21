@@ -1027,11 +1027,12 @@ const TableCell = ({ children, className, align = 'left', style }: { children?: 
   </td>
 );
 
-const MavxonLogo = ({ className }: { className?: string }) => (
-  <div className={cn("flex items-center gap-1", className)}>
-    <span className="text-[#FBBF24] font-black tracking-tighter">mav</span>
-    <span className="text-[#3B82F6] font-black tracking-tighter">xon</span>
-    <span className="text-white font-bold ml-1 text-xs">IMS</span>
+const MIMSLogo = ({ className }: { className?: string }) => (
+  <div className={cn("flex items-center", className)}>
+    <span className="font-black tracking-tighter bg-gradient-to-br from-[#FBBF24] via-[#FBBF24] to-[#3B82F6] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">M</span>
+    <span className="text-white font-black tracking-tighter drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">I</span>
+    <span className="font-black tracking-tighter bg-gradient-to-br from-[#FBBF24] via-[#FBBF24] to-[#3B82F6] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">M</span>
+    <span className="text-white font-black tracking-tighter drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">S</span>
   </div>
 );
 
@@ -1532,7 +1533,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
     { name: 'Facebook', url: 'https://www.facebook.com', icon: 'Globe' },
     { name: 'YouTube', url: 'https://www.youtube.com', icon: 'Globe' },
     { name: 'Pinterest', url: 'https://www.pinterest.com', icon: 'Globe' },
-    { name: 'Mavxon', url: 'https://mavxon.com', icon: 'Globe' }
+    { name: 'MIMS Website', url: 'https://mavxon.com', icon: 'Globe' }
   ]);
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [newLinkName, setNewLinkName] = useState('');
@@ -2343,7 +2344,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `mavxon_ims_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `mims_backup_${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -2867,7 +2868,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <MavxonLogo className="scale-[2.5] mb-12" />
+            <MIMSLogo className="scale-[2.5] mb-12" />
             
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
@@ -2904,7 +2905,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
           className="fixed bottom-8 right-8 w-16 h-16 bg-white border-2 border-blue-600 rounded-full shadow-2xl z-[100] flex items-center justify-center hover:scale-110 transition-transform animate-bounce overflow-hidden"
           title="Back to App"
         >
-          <MavxonLogo className="scale-125" />
+          <MIMSLogo className="scale-125" />
         </button>
       )}
 
@@ -2930,7 +2931,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
               title="External Browser"
             />
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-10">
-              <MavxonLogo className="scale-150" />
+              <MIMSLogo className="scale-150" />
             </div>
           </div>
         </div>
@@ -3095,10 +3096,8 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
           <aside className="w-56 bg-[#0f172a] text-white flex-col hidden md:flex fixed h-full z-50 shadow-2xl border-r border-slate-800">
             <div className="h-16 px-6 flex items-center border-b border-slate-800">
               <a href="https://www.facebook.com/mavxon" target="_blank" rel="noopener noreferrer" className="flex items-center hover:opacity-80 transition-all group w-fit h-full">
-                <div className="flex items-center bg-white/5 h-10 px-3 rounded-lg border border-white/10 group-hover:border-white/20 transition-all">
-                  <span className="text-[#FBBF24] font-black text-2xl tracking-tighter drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]">mav</span>
-                  <span className="text-[#3B82F6] font-black text-2xl tracking-tighter drop-shadow-[0_0_8px_rgba(59,130,246,0.3)]">xon</span>
-                  <span className="text-white font-bold ml-2 text-xs tracking-widest mt-1">IMS</span>
+                <div className="flex items-center bg-white/5 h-12 px-4 rounded-xl border border-white/10 group-hover:border-white/20 transition-all shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
+                  <MIMSLogo className="text-3xl" />
                 </div>
               </a>
             </div>
@@ -3248,8 +3247,8 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                 >
                   {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
-                <div className="flex items-center bg-white/5 h-10 px-3 rounded-lg border border-white/10">
-                  <span className="font-black tracking-tighter text-xl text-blue-500 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]">IMS</span>
+                <div className="flex items-center bg-white/5 h-11 px-3 rounded-lg border border-white/10">
+                  <MIMSLogo className="text-2xl" />
                 </div>
                 <div className="h-4 w-px bg-slate-700 mx-1"></div>
                 <h2 className="text-sm font-bold text-white tracking-tight truncate max-w-[100px] sm:max-w-[150px]">
@@ -7036,11 +7035,8 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
               <span className="text-gray-700">|</span>
               <a href="mailto:Bijoy.mm112@gmail.com" className="hover:text-[#3B82F6] transition-colors">Bijoy.mm112@gmail.com</a>
             </div>
-            <div className="flex-1 text-right">
-              &copy; 2026 <a href="https://www.facebook.com/mavxon" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity inline-flex items-center">
-                <span className="text-[#FBBF24] font-black tracking-tighter">mav</span>
-                <span className="text-[#3B82F6] font-black tracking-tighter">xon</span>
-              </a> <span className="text-white font-bold ml-1">IMS</span>
+            <div className="flex-1 text-right flex items-center justify-end gap-1">
+              &copy; 2026 <MIMSLogo className="text-sm" />
             </div>
           </div>
         </div>
