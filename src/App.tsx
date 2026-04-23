@@ -2133,6 +2133,15 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
     }
 
     try {
+      // Clean up NaN, undefined, and empty string sizes to prevent Firestore issues
+      Object.keys(data).forEach(key => {
+        if (data[key] === undefined) {
+          delete data[key];
+        } else if (typeof data[key] === 'number' && isNaN(data[key])) {
+          data[key] = 0;
+        }
+      });
+
       const oldItem = (category === 'tiles' ? tiles : goods).find(i => i.id === id);
       const oldName = (oldItem as any)?.name;
       const oldCode = (oldItem as any)?.code;
