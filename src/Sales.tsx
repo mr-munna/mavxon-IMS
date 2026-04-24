@@ -393,6 +393,9 @@ export function SalesManager({
                 const response = await fetch(fetchUrl);
                 if (!response.ok) throw new Error('Network response was not ok');
                 const blob = await response.blob();
+                if (!blob.type.startsWith('image/')) {
+                  throw new Error(`Invalid content type: ${blob.type}`);
+                }
                 return await new Promise<string>((resolve, reject) => {
                   const reader = new FileReader();
                   reader.onloadend = () => resolve(reader.result as string);
@@ -404,8 +407,17 @@ export function SalesManager({
              try {
                 img.src = await fetchAsBase64(url);
              } catch (fetchErr) {
-               const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`;
-               img.src = await fetchAsBase64(proxyUrl);
+               try {
+                 const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`;
+                 img.src = await fetchAsBase64(proxyUrl);
+               } catch (localProxyErr) {
+                 try {
+                   const externalProxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                   img.src = await fetchAsBase64(externalProxyUrl);
+                 } catch (fallbackErr) {
+                   console.error("All image proxies failed for PDF.");
+                 }
+               }
              }
           } catch (e) {
             console.warn("Failed to convert image to base64 for PDF", e);

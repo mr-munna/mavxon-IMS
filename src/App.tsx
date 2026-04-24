@@ -2305,8 +2305,11 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
     
     const fetchAsBase64 = async (fetchUrl: string) => {
       const response = await fetch(fetchUrl);
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`);
       const blob = await response.blob();
+      if (!blob.type.startsWith('image/')) {
+        throw new Error(`Invalid content type: ${blob.type}`);
+      }
       const base64 = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result as string);
@@ -2323,13 +2326,19 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
     try {
       return await fetchAsBase64(url);
     } catch (error) {
-      console.warn("Direct fetch failed, trying CORS proxy...", error);
+      console.warn("Direct fetch failed, trying local proxy...", error);
       try {
         const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(url)}`;
         return await fetchAsBase64(proxyUrl);
       } catch (proxyError) {
-        console.error("Error converting URL to Base64 via proxy:", proxyError);
-        return url;
+        console.warn("Local proxy failed, trying external proxy...", proxyError);
+        try {
+           const externalProxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+           return await fetchAsBase64(externalProxyUrl);
+        } catch (externalError) {
+           console.error("All proxies failed:", externalError);
+           return url;
+        }
       }
     }
   };
