@@ -198,7 +198,7 @@ service cloud.firestore {
     }
 
     match /settings/{settingId} {
-      allow read: if isPendingOrApproved();
+      allow read: if true;
       allow write: if isSuperAdmin();
     }
 

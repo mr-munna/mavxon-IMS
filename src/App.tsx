@@ -708,9 +708,9 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
                 <div id="quotation-preview-content" className="bg-white shadow-lg mx-auto max-w-[210mm] min-h-[297mm] text-gray-900 flex flex-col">
                   {/* Header */}
                   <div id="quotation-header" className="bg-black relative overflow-hidden w-full">
-                    {selectedQuote.quoteHeader?.headerImage ? (
+                    {(selectedQuote.quoteHeader?.headerImage || quoteHeader?.headerImage) ? (
                       <img 
-                        src={selectedQuote.quoteHeader.headerImage} 
+                        src={selectedQuote.quoteHeader?.headerImage || quoteHeader?.headerImage} 
                         alt="Header" 
                         className="w-full h-auto block min-h-[100px]" 
                         referrerPolicy="no-referrer"
@@ -834,9 +834,9 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
                   
                   {/* Footer (Black bar) */}
                   <div id="quotation-footer" className="mt-auto bg-black text-white text-[10px] text-center overflow-hidden h-[100px] flex flex-col justify-center">
-                    {selectedQuote.quoteFooter?.footerImage ? (
+                    {(selectedQuote.quoteFooter?.footerImage || quoteFooter?.footerImage) ? (
                       <img 
-                        src={selectedQuote.quoteFooter.footerImage} 
+                        src={selectedQuote.quoteFooter?.footerImage || quoteFooter?.footerImage} 
                         alt="Footer" 
                         className="w-full h-full object-cover" 
                         referrerPolicy="no-referrer"
