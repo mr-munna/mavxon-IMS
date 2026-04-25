@@ -580,7 +580,7 @@ export function SalesManager({
                     </td>
                     <td className="px-6 py-4 text-gray-900 font-medium">{sale.clientName}</td>
                     <td className="px-6 py-4 text-right font-normal tracking-tight">
-                      ৳{sale.totalAmount.toLocaleString()}
+                      Tk. {sale.totalAmount.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span className={cn(
@@ -688,7 +688,7 @@ export function SalesManager({
                                    </p>
                                    <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 mt-4">Invoice Total</div>
                                    <p className="text-gray-900 font-black text-xl">
-                                       ৳{selectedSale.totalAmount.toLocaleString()}
+                                       Tk. {selectedSale.totalAmount.toLocaleString()}
                                    </p>
                                    <p className={cn("text-xs font-bold mt-1 uppercase tracking-wider", 
                                         selectedSale.status === 'paid' ? "text-green-600" :
@@ -707,8 +707,8 @@ export function SalesManager({
                                         <th className="py-3 text-left text-xs font-normal text-gray-500 uppercase tracking-wider">Description</th>
                                         <th className="py-3 text-center text-xs font-normal text-gray-500 uppercase tracking-wider w-20">Unit</th>
                                         <th className="py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider w-24">Qty</th>
-                                        <th className="py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider w-32">Rate (৳)</th>
-                                        <th className="py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider w-32">Total (৳)</th>
+                                        <th className="py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider w-32">Rate (Tk. )</th>
+                                        <th className="py-3 text-right text-xs font-normal text-gray-500 uppercase tracking-wider w-32">Total (Tk. )</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -735,15 +735,15 @@ export function SalesManager({
                                          <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
                                              <div className="flex justify-between items-center text-sm">
                                                  <span className="text-gray-600 font-medium">Billed:</span>
-                                                 <span className="font-mono text-gray-900">৳{selectedSale.totalAmount.toLocaleString()}</span>
+                                                 <span className="font-mono text-gray-900">Tk. {selectedSale.totalAmount.toLocaleString()}</span>
                                              </div>
                                              <div className="flex justify-between items-center text-sm mt-1 border-b border-gray-200 pb-1">
                                                  <span className="text-green-600 font-medium">Paid:</span>
-                                                 <span className="font-mono text-green-700">৳{selectedSale.paidAmount.toLocaleString()}</span>
+                                                 <span className="font-mono text-green-700">Tk. {selectedSale.paidAmount.toLocaleString()}</span>
                                              </div>
                                              <div className="flex justify-between items-center text-sm mt-1 pt-1 font-bold">
                                                  <span className="text-orange-600">Due:</span>
-                                                 <span className="font-mono text-orange-700">৳{selectedSale.dueAmount.toLocaleString()}</span>
+                                                 <span className="font-mono text-orange-700">Tk. {selectedSale.dueAmount.toLocaleString()}</span>
                                              </div>
                                          </div>
                                      )}
@@ -751,17 +751,17 @@ export function SalesManager({
                                <div className="w-72 space-y-3">
                                     <div className="flex justify-between items-center text-sm">
                                         <span className="text-gray-500 font-medium">Subtotal:</span>
-                                        <span className="font-mono text-gray-900">৳{selectedSale.subTotal.toLocaleString()}</span>
+                                        <span className="font-mono text-gray-900">Tk. {selectedSale.subTotal.toLocaleString()}</span>
                                     </div>
                                     {selectedSale.discount > 0 && (
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-red-500 font-medium">Discount:</span>
-                                            <span className="font-mono text-red-600">- ৳{selectedSale.discount.toLocaleString()}</span>
+                                            <span className="font-mono text-red-600">- Tk. {selectedSale.discount.toLocaleString()}</span>
                                         </div>
                                     )}
                                     <div className="flex justify-between items-center text-lg font-black border-t-2 border-gray-900 pt-3 mt-3">
                                         <span className="text-gray-900">Total:</span>
-                                        <span className="tracking-tight text-blue-600">৳{selectedSale.totalAmount.toLocaleString()}</span>
+                                        <span className="tracking-tight text-blue-600">Tk. {selectedSale.totalAmount.toLocaleString()}</span>
                                     </div>
                                </div>
                            </div>
@@ -836,7 +836,7 @@ export function SalesManager({
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Paid Amount (৳)</label>
+                                            <label className="text-xs font-bold text-gray-500 uppercase">Paid Amount (Tk. )</label>
                                             <div className="flex gap-1">
                                                 <button 
                                                     onClick={() => setPaidAmount(calculateTotal())}
@@ -853,7 +853,7 @@ export function SalesManager({
                                             </div>
                                         </div>
                                         <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">৳</span>
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">Tk. </span>
                                             <input
                                                 type="number"
                                                 value={paidAmount || ''}
@@ -879,9 +879,9 @@ export function SalesManager({
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (৳)</label>
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Discount (Tk. )</label>
                                         <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">৳</span>
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-sm">Tk. </span>
                                             <input
                                                 type="number"
                                                 value={discount || ''}
@@ -897,7 +897,7 @@ export function SalesManager({
                                     <div className="pt-2 border-t border-gray-200 flex justify-between items-center text-xs font-bold text-gray-400">
                                         <span className="uppercase">Net Payable Amount:</span>
                                         <span className="text-sm font-black text-blue-600 font-mono">
-                                            ৳{calculateTotal().toLocaleString()}
+                                            Tk. {calculateTotal().toLocaleString()}
                                         </span>
                                     </div>
                                 )}
@@ -947,8 +947,8 @@ export function SalesManager({
                                         <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs">Item Description</th>
                                         <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs w-24">Unit</th>
                                         <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs w-32 text-right">Qty</th>
-                                        <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs w-40 text-right">Unit Price (৳)</th>
-                                        <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs w-40 text-right">Total (৳)</th>
+                                        <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs w-40 text-right">Unit Price (Tk. )</th>
+                                        <th className="px-4 py-3 font-normal text-gray-500 uppercase text-xs w-40 text-right">Total (Tk. )</th>
                                         <th className="px-4 py-3 font-normal text-center w-16"></th>
                                     </tr>
                                 </thead>
@@ -1014,23 +1014,23 @@ export function SalesManager({
                                 <div className="w-80 space-y-3 bg-gray-50 p-6 rounded-2xl border border-gray-200">
                                     <div className="flex justify-between items-center text-sm">
                                         <span className="text-gray-500 font-medium tracking-wide">Subtotal</span>
-                                        <span className="font-mono text-gray-900 font-medium">৳{calculateSubtotal().toLocaleString()}</span>
+                                        <span className="font-mono text-gray-900 font-medium">Tk. {calculateSubtotal().toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm">
                                         <span className="text-red-500 font-medium tracking-wide">Discount</span>
-                                        <span className="font-mono text-red-600 font-medium">- ৳{(calculateSubtotal() - calculateTotal()).toLocaleString()}</span>
+                                        <span className="font-mono text-red-600 font-medium">- Tk. {(calculateSubtotal() - calculateTotal()).toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-lg font-black border-t-2 border-gray-900 pt-3 mt-3">
                                         <span className="text-gray-900 tracking-wide">Total</span>
-                                        <span className="tracking-tight text-blue-600">৳{calculateTotal().toLocaleString()}</span>
+                                        <span className="tracking-tight text-blue-600">Tk. {calculateTotal().toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm pt-2">
                                         <span className="text-green-600 font-medium tracking-wide">Paid</span>
-                                        <span className="font-mono text-green-700 font-bold">৳{paidAmount.toLocaleString()}</span>
+                                        <span className="font-mono text-green-700 font-bold">Tk. {paidAmount.toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm pt-1 border-t border-gray-200">
                                         <span className="text-orange-600 font-medium tracking-wide">Due</span>
-                                        <span className="font-mono text-orange-700 font-bold">৳{(calculateTotal() - paidAmount).toLocaleString()}</span>
+                                        <span className="font-mono text-orange-700 font-bold">Tk. {(calculateTotal() - paidAmount).toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>

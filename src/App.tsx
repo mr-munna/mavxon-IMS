@@ -578,7 +578,7 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center">
                   <span className="text-xs text-gray-400">Total Amount</span>
-                  <span className="font-bold text-gray-900">{quote.totalAmount?.toLocaleString()} BDT</span>
+                  <span className="font-bold text-gray-900">Tk. {quote.totalAmount?.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -632,7 +632,7 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
                   <td className="p-4 text-sm text-gray-600">{quote.quoteInfo?.date}</td>
                   <td className="p-4 font-medium text-gray-900">{quote.quoteInfo?.client}</td>
                   <td className="p-4 text-sm text-gray-600">{quote.quoteInfo?.to}</td>
-                  <td className="p-4 text-right font-normal text-gray-900">{quote.totalAmount?.toLocaleString()} BDT</td>
+                  <td className="p-4 text-right font-normal text-gray-900">Tk. {quote.totalAmount?.toLocaleString()}</td>
                   <td className="p-4">
                     <div className="flex justify-center gap-2" onClick={(e) => e.stopPropagation()}>
                       <button 
@@ -804,7 +804,7 @@ function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload,
                       <tfoot>
                         <tr className="bg-gray-50">
                           <td colSpan={4} className="p-4 text-right font-normal uppercase tracking-wider text-xs">Grand Total</td>
-                          <td className="p-4 text-right font-normal text-lg text-blue-600">{selectedQuote.totalAmount?.toLocaleString()} BDT</td>
+                          <td className="p-4 text-right font-normal text-lg text-blue-600">Tk. {selectedQuote.totalAmount?.toLocaleString()}</td>
                         </tr>
                       </tfoot>
                     </table>
@@ -6326,7 +6326,7 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
                                   TOTAL AMOUNT:
                                 </td>
                                 <td className="p-3 text-center">
-                                  {calculateTotalAmount().toLocaleString()}
+                                  Tk. {calculateTotalAmount().toLocaleString()}
                                 </td>
                                 {isEditingQuote && <td></td>}
                               </tr>
