@@ -341,14 +341,16 @@ const TableHeader = ({ children, className, align = 'left' }: { children: React.
   </th>
 );
 
-function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload, onEdit, onBulkDelete }: { 
+function ViewQuote({ quotes, isSuperAdmin, isSupremeAdmin, onDelete, onDownload, onEdit, onBulkDelete, quoteHeader, quoteFooter }: { 
   quotes: any[], 
   isSuperAdmin: boolean, 
   isSupremeAdmin: boolean,
   onDelete: (id: string) => void,
   onDownload: (quote: any) => void,
   onEdit: (quote: any) => void,
-  onBulkDelete?: (ids: string[]) => void
+  onBulkDelete?: (ids: string[]) => void,
+  quoteHeader?: any,
+  quoteFooter?: any
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'gallery' | 'list'>('gallery');
@@ -4154,6 +4156,8 @@ Mobile: +88 01670 266 023; +88 01896 459 103`);
           {activeTab === 'view_quote' && (
             <div className="w-full overflow-x-auto pb-8">
               <ViewQuote 
+                quoteHeader={quoteHeader}
+                quoteFooter={quoteFooter}
                 quotes={savedQuotes} 
                 isSuperAdmin={isSuperAdmin} 
                 isSupremeAdmin={isSupremeAdmin}
