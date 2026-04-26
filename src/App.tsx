@@ -1070,8 +1070,11 @@ export default function App() {
       // Temporarily remove constraints for capture
       originalOverflow = quoteRef.current.style.overflow;
       originalHeight = quoteRef.current.style.height;
+      const originalWidth = quoteRef.current.style.width;
+      
       quoteRef.current.style.overflow = 'visible';
       quoteRef.current.style.height = 'auto';
+      quoteRef.current.style.width = '1024px'; // Force a desktop-like width for capture
 
       // Small delay to ensure rendering is complete
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -1104,7 +1107,7 @@ export default function App() {
       toast.loading('Capturing content...', { id: loadingToast });
 
       const canvasOptions = {
-        scale: 1, // Use scale 1 for maximum reliability
+        scale: 2, // Use higher scale for sharper text
         useCORS: true,
         allowTaint: false,
         logging: false, // Set to false for production
@@ -1155,11 +1158,15 @@ export default function App() {
               box-shadow: none !important;
               text-shadow: none !important;
             }
-            button, .group-hover\\:opacity-100, input, .page-break-marker, .animate-bounce { display: none !important; }
+            button, .group-hover\\:opacity-100, input, .page-break-marker, .animate-bounce, .absolute.inset-0.bg-black\\/60 { display: none !important; }
             #quotation-header, #quotation-footer { background-color: #000000 !important; color: white !important; display: block !important; width: 100% !important; margin: 0 !important; }
-            table { border-collapse: collapse !important; width: 100% !important; table-layout: fixed !important; border: 1px solid #111827 !important; }
-            th, td { border: 1px solid #111827 !important; padding: 6px !important; font-size: 10px !important; word-break: break-all !important; }
-            th { background-color: #f3f4f6 !important; font-weight: bold !important; }
+            #quotation-body { width: 100% !important; padding: 40px !important; margin: 0 !important; max-width: none !important; }
+            .overflow-auto, .overflow-x-auto { overflow: visible !important; width: 100% !important; max-width: none !important; }
+            table { border-collapse: collapse !important; width: 100% !important; table-layout: fixed !important; border: 1px solid #000000 !important; min-width: 0 !important; margin: 0 !important; }
+            th, td { border: 1px solid #000000 !important; padding: 4px 2px !important; font-size: 7pt !important; word-break: break-all !important; white-space: normal !important; vertical-align: middle !important; overflow: hidden !important; height: auto !important; }
+            th { background-color: #f3f4f6 !important; font-weight: bold !important; text-align: center !important; }
+            td { text-align: center !important; }
+            img { max-width: 60px !important; max-height: 60px !important; object-fit: contain !important; }
           `;
           clonedDoc.head.appendChild(pdfStyle);
         }
@@ -1288,6 +1295,7 @@ export default function App() {
       if (quoteRef.current) {
         quoteRef.current.style.overflow = originalOverflow;
         quoteRef.current.style.height = originalHeight;
+        quoteRef.current.style.width = originalWidth;
       }
       for (const [img, src] of originalSrcs.entries()) img.src = src;
       window.scrollTo(scrollX, scrollY);
